@@ -5,7 +5,7 @@ NOTSCORED = 0
 PASS = 0
 FAILED = 0
 
-from .utils import unused_filesystems
+from utils import unused_filesystems
 
 def create_env_file(os_info: dict):
     filename = ".env"
