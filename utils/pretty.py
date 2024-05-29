@@ -4,6 +4,8 @@ def pretty_underline(text:str, underline: str ="="):
     except:
         print()
 
-def pretty_print(text: str, underline: str = "="):
+def pretty_print(text: str, underline: str = "=", upper_underline: bool = False):
+    if upper_underline:
+        pretty_underline(text, underline)
     print(text)
     pretty_underline(text, underline)

@@ -9,6 +9,7 @@ Linux Benchmark v2.0.0
 """
 
 import subprocess
+import inspect
 
 from .pretty import pretty_print, pretty_underline
 
@@ -34,6 +35,7 @@ def ensure_cramfs_disabled():
     server. If this filesystem type is not needed, disable it.
     """
     pretty_print("[1.1.1.1] Ensure mounting of cramfs filesystems is disabled (Scored)")
+    print()
     
     modprobe_command = 'modprobe -n -v cramfs'
     lsmod_command = 'lsmod | grep cramfs'
@@ -58,8 +60,10 @@ def ensure_cramfs_disabled():
     else:
         pretty_underline(lsmod_result.stdout)
 
-    expected_output_modprobe = """insmod /lib/modules/6.5.O-35-generic/kernel/drivers/mtd/mtd.ko
-    insmod /lib/modules/6.5.O-35-generic/kernel/fs/cramfs/cramfs.ko"""
+    expected_output_modprobe = """
+insmod /lib/modules/6.5.O-35-generic/kernel/drivers/mtd/mtd.ko
+insmod /lib/modules/6.5.O-35-generic/kernel/fs/cramfs/cramfs.ko
+"""
     
     # insmod /lib/modules/6.5.O-35-generic/kernel/drivers/mtd/mtd.ko
     # insmod /lib/modules/6.5.O-35-generic/kernel/fs/cramfs/cramfs.ko
@@ -71,5 +75,18 @@ def ensure_cramfs_disabled():
         print("Cramfs filesystem mounting is disabled")
     else:
         print("Cramfs filesystem mounting is not properly disabled.")
+    print()
 
-ensure_cramfs_disabled()
+def run():
+    pretty_print("[1.1] Filesystem Configuration", upper_underline=True)
+    print()
+
+    # Get the current module
+    current_module = inspect.getmodule(inspect.currentframe())
+    
+    # Get all functions in the current module
+    functions = inspect.getmembers(current_module, inspect.isfunction)
+
+    for name, func in functions:
+        if name not in ("run", "pretty_print", "pretty_underline"):
+            func()

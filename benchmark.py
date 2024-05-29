@@ -36,8 +36,7 @@ def get_os_info() -> dict[str, str]:
 
 if __name__ == '__main__':
     os_info = get_os_info()
-    print(os_info)
     if os_info['os_version'] == '22.04' and os_info['os_type'] == 'ubuntu':
-        unused_filesystems.ensure_cramfs_disabled()
+        unused_filesystems.run()
     else:
         print("Unsupported OS")
