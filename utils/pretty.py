@@ -1,5 +1,8 @@
 def pretty_underline(text:str, underline: str ="="):
-    print(len(text.splitlines()[-1]) * underline)
+    try:
+        print(len(text.splitlines()[-1]) * underline)
+    except:
+        print()
 
 def pretty_print(text: str, underline: str = "="):
     print(text)
