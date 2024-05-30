@@ -593,6 +593,7 @@ def ensure_vfat_disabled():
             f.write(f"{lsmod_result.stdout}\n")
         
         f.write("===============================\n\n")
+    print()
 
 def ensure_tmp_configured():
     """
@@ -658,6 +659,7 @@ def ensure_tmp_configured():
             f.write("/tmp is NOT configured.\n")
         
         f.write("===============================\n\n")
+    print()
 
 def ensure_nodev_on_tmp():
     """
@@ -703,6 +705,7 @@ def ensure_nodev_on_tmp():
             f.write("nodev option is NOT set on /tmp partition.\n")
 
         f.write("===============================\n\n")
+    print()
 
 def ensure_nosuid_on_tmp():
     """
@@ -748,6 +751,7 @@ def ensure_nosuid_on_tmp():
             f.write("nosuid option is NOT set on /tmp partition.\n")
 
         f.write("===============================\n\n")
+    print()
 
 def ensure_noexec_on_tmp():
     """
@@ -793,6 +797,7 @@ def ensure_noexec_on_tmp():
             f.write("noexec option is NOT set on /tmp partition.\n")
 
         f.write("===============================\n\n")
+    print()
 
 def ensure_var_configured():
     """
@@ -841,6 +846,7 @@ def ensure_var_configured():
             f.write("/var is NOT configured.\n")
 
         f.write("===============================\n\n")
+    print()
 
 #TODO: Add 1.1.7 - 1.1.12
 
@@ -891,6 +897,7 @@ def ensure_home_configured():
             f.write("/home is NOT configured.\n")
 
         f.write("===============================\n\n")
+    print()
 
 def ensure_nodev_on_home():
     """
@@ -936,6 +943,7 @@ def ensure_nodev_on_home():
             f.write("nodev option is NOT set on /home partition.\n")
 
         f.write("===============================\n\n")
+    print()
 
 def ensure_nodev_on_dev_shm():
     """
@@ -981,6 +989,7 @@ def ensure_nodev_on_dev_shm():
             f.write("nodev option is NOT set on /dev/shm partition.\n")
 
         f.write("===============================\n\n")
+    print()
 
 def ensure_nosuid_on_dev_shm():
     """
@@ -1026,6 +1035,7 @@ def ensure_nosuid_on_dev_shm():
             f.write("nosuid option is NOT set on /dev/shm partition.\n")
 
         f.write("===============================\n\n")
+    print()
 
 def ensure_noexec_on_dev_shm():
     """
@@ -1071,6 +1081,7 @@ def ensure_noexec_on_dev_shm():
             f.write("noexec option is NOT set on /dev/shm partition.\n")
 
         f.write("===============================\n\n")
+    print()
 
 def ensure_nodev_on_removable_media():
     """
@@ -1120,6 +1131,7 @@ def ensure_nodev_on_removable_media():
                 f.write("nodev option is set on the removable medias.\n")
 
         f.write("===============================\n\n")
+    print()
 
 def ensure_nosuid_on_removable_media():
     """
@@ -1168,6 +1180,7 @@ def ensure_nosuid_on_removable_media():
                 f.write("nosuid option is set on the removable medias.\n")
 
         f.write("===============================\n\n")
+    print()
 
 def ensure_noexec_on_removable_media():
     """
@@ -1216,6 +1229,7 @@ def ensure_noexec_on_removable_media():
                 f.write("noexec option is set on the removable medias.\n")
 
         f.write("===============================\n\n")
+    print()
 
 def ensure_sticky_bit_on_world_writable_directories():
     """
@@ -1262,6 +1276,7 @@ def ensure_sticky_bit_on_world_writable_directories():
             f.write("Sticky bit is NOT set on all world-writable directories.\n")
 
         f.write("===============================\n\n")
+    print()
 
 def ensure_disabled_automounting():
     """
@@ -1308,6 +1323,7 @@ def ensure_disabled_automounting():
             f.write("Automounting is NOT disabled.\n")
 
         f.write("===============================\n\n")
+    print()
 
 def ensure_usb_storage_disabled():
     """
@@ -1383,6 +1399,7 @@ def ensure_usb_storage_disabled():
         print()
         
         f.write("===============================\n\n")
+    print()
 
 def run():
     with open(OUTPUT_FILE, "w") as f:
