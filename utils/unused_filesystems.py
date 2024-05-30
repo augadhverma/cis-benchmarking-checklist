@@ -52,8 +52,6 @@ def ensure_cramfs_disabled():
         print("Error:")
         print(modprobe_result.stderr.strip())
         pretty_underline(modprobe_result.stderr, "-")
-    else:
-        pretty_underline(modprobe_result.stdout, "-")
 
     print(f"Running command: {lsmod_command}")
     lsmod_result = subprocess.run(lsmod_command, shell=True, capture_output=True, text=True)
@@ -62,15 +60,13 @@ def ensure_cramfs_disabled():
         print("Error:")
         print(lsmod_result.stderr.strip())
         pretty_underline(lsmod_result.stderr, "-")
-    else:
-        pretty_underline(lsmod_result.stdout, "-")
 
     expected_output_modprobe = "insmod /lib/modules/6.5.0-35-generic/kernel/fs/cramfs/cramfs.ko"
     
     # insmod /lib/modules/6.5.O-35-generic/kernel/drivers/mtd/mtd.ko
     # insmod /lib/modules/6.5.O-35-generic/kernel/fs/cramfs/cramfs.ko
 
-    modprobe_disabled = expected_output_modprobe in modprobe_result.stdout
+    modprobe_disabled = expected_output_modprobe in modprobe_result.stdout or not modprobe_result.stdout.strip()
     lsmod_disabled = not lsmod_result.stdout.strip()
 
     if modprobe_disabled and lsmod_disabled:
@@ -128,8 +124,6 @@ def ensure_freevxfs_disabled():
         print("Error:")
         print(modprobe_result.stderr.strip())
         pretty_underline(modprobe_result.stderr, "-")
-    else:
-        pretty_underline(modprobe_result.stdout, "-")
 
     print(f"Running command: {lsmod_command}")
     lsmod_result = subprocess.run(lsmod_command, shell=True, capture_output=True, text=True)
@@ -143,7 +137,7 @@ def ensure_freevxfs_disabled():
 
     expected_output_modprobe = "insmod /lib/modules/6.5.0-35-generic/kernel/fs/freevxfs/freevxfs.ko"
 
-    modprobe_disabled = expected_output_modprobe in modprobe_result.stdout
+    modprobe_disabled = expected_output_modprobe in modprobe_result.stdout or not modprobe_result.stdout.strip()
     lsmod_disabled = not lsmod_result.stdout.strip()
 
     if modprobe_disabled and lsmod_disabled:
@@ -201,8 +195,6 @@ def ensure_jffs2_disabled():
         print("Error:")
         print(modprobe_result.stderr.strip())
         pretty_underline(modprobe_result.stderr, "-")
-    else:
-        pretty_underline(modprobe_result.stdout, "-")
 
     print(f"Running command: {lsmod_command}")
     lsmod_result = subprocess.run(lsmod_command, shell=True, capture_output=True, text=True)
@@ -216,7 +208,7 @@ def ensure_jffs2_disabled():
 
     expected_output_modprobe = "insmod /lib/modules/6.5.0-35-generic/kernel/fs/jffs2/jffs2.ko"
 
-    modprobe_disabled = expected_output_modprobe in modprobe_result.stdout
+    modprobe_disabled = expected_output_modprobe in modprobe_result.stdout or not modprobe_result.stdout.strip()
     lsmod_disabled = not lsmod_result.stdout.strip()
 
     if modprobe_disabled and lsmod_disabled:
@@ -274,8 +266,6 @@ def ensure_hfs_disabled():
         print("Error:")
         print(modprobe_result.stderr.strip())
         pretty_underline(modprobe_result.stderr, "-")
-    else:
-        pretty_underline(modprobe_result.stdout, "-")
 
     print(f"Running command: {lsmod_command}")
     lsmod_result = subprocess.run(lsmod_command, shell=True, capture_output=True, text=True)
@@ -289,7 +279,7 @@ def ensure_hfs_disabled():
 
     expected_output_modprobe = "insmod /lib/modules/6.5.0-35-generic/kernel/fs/hfs/hfs.ko"
 
-    modprobe_disabled = expected_output_modprobe in modprobe_result.stdout
+    modprobe_disabled = expected_output_modprobe in modprobe_result.stdout or not modprobe_result.stdout.strip()
     lsmod_disabled = not lsmod_result.stdout.strip()
 
     if modprobe_disabled and lsmod_disabled:
@@ -347,8 +337,6 @@ def ensure_hfsplus_disabled():
         print("Error:")
         print(modprobe_result.stderr.strip())
         pretty_underline(modprobe_result.stderr, "-")
-    else:
-        pretty_underline(modprobe_result.stdout, "-")
 
     print(f"Running command: {lsmod_command}")
     lsmod_result = subprocess.run(lsmod_command, shell=True, capture_output=True, text=True)
@@ -362,7 +350,7 @@ def ensure_hfsplus_disabled():
 
     expected_output_modprobe = "insmod /lib/modules/6.5.0-35-generic/kernel/fs/hfsplus/hfsplus.ko"
 
-    modprobe_disabled = expected_output_modprobe in modprobe_result.stdout
+    modprobe_disabled = expected_output_modprobe in modprobe_result.stdout or not modprobe_result.stdout.strip()
     lsmod_disabled = not lsmod_result.stdout.strip()
 
     if modprobe_disabled and lsmod_disabled:
@@ -421,8 +409,6 @@ def ensure_squashfs_disabled():
         print("Error:")
         print(modprobe_result.stderr.strip())
         pretty_underline(modprobe_result.stderr, "-")
-    else:
-        pretty_underline(modprobe_result.stdout, "-")
 
     print(f"Running command: {lsmod_command}")
     lsmod_result = subprocess.run(lsmod_command, shell=True, capture_output=True, text=True)
@@ -436,7 +422,7 @@ def ensure_squashfs_disabled():
 
     expected_output_modprobe = "insmod /lib/modules/6.5.0-35-generic/kernel/fs/squashfs/squashfs.ko"
 
-    modprobe_disabled = expected_output_modprobe in modprobe_result.stdout
+    modprobe_disabled = expected_output_modprobe in modprobe_result.stdout or not modprobe_result.stdout.strip()
     lsmod_disabled = not lsmod_result.stdout.strip()
 
     if modprobe_disabled and lsmod_disabled:
@@ -496,8 +482,6 @@ def ensure_udf_disabled():
         print("Error:")
         print(modprobe_result.stderr.strip())
         pretty_underline(modprobe_result.stderr, "-")
-    else:
-        pretty_underline(modprobe_result.stdout, "-")
 
     print(f"Running command: {lsmod_command}")
     lsmod_result = subprocess.run(lsmod_command, shell=True, capture_output=True, text=True)
@@ -511,7 +495,7 @@ def ensure_udf_disabled():
 
     expected_output_modprobe = "insmod /lib/modules/6.5.0-35-generic/kernel/fs/udf/udf.ko"
 
-    modprobe_disabled = expected_output_modprobe in modprobe_result.stdout
+    modprobe_disabled = expected_output_modprobe in modprobe_result.stdout or not modprobe_result.stdout.strip()
     lsmod_disabled = not lsmod_result.stdout.strip()
 
     if modprobe_disabled and lsmod_disabled:
@@ -571,8 +555,6 @@ def ensure_vfat_disabled():
         print("Error:")
         print(modprobe_result.stderr.strip())
         pretty_underline(modprobe_result.stderr, "-")
-    else:
-        pretty_underline(modprobe_result.stdout, "-")
 
     print(f"Running command: {lsmod_command}")
     lsmod_result = subprocess.run(lsmod_command, shell=True, capture_output=True, text=True)
@@ -586,7 +568,7 @@ def ensure_vfat_disabled():
 
     expected_output_modprobe = "insmod /lib/modules/6.5.0-35-generic/kernel/fs/vfat/vfat.ko"
 
-    modprobe_disabled = expected_output_modprobe in modprobe_result.stdout
+    modprobe_disabled = expected_output_modprobe in modprobe_result.stdout or not modprobe_result.stdout.strip()
     lsmod_disabled = not lsmod_result.stdout.strip()
 
     if modprobe_disabled and lsmod_disabled:
