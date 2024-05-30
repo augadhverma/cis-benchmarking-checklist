@@ -633,7 +633,7 @@ def ensure_tmp_configured():
 
         expected_outputs = [
             "tmpfs on /tmp type tmpfs",
-            "tmpfs /tmp tmpfs",
+            "tmpfs	/tmp	tmpfs",
             "enabled"
         ]
         
@@ -649,7 +649,8 @@ def ensure_tmp_configured():
                 pretty_underline(output.stderr, "-")
                 f.write(f"Error:\n{output.stderr}\n")
 
-            configured = configured or output.stdout in expected_outputs
+            for op in expected_outputs:
+                configured = configured or op in output.stdout
         
         if configured:
             print("/tmp is configured.")
@@ -1312,8 +1313,12 @@ def ensure_disabled_automounting():
         f.write(f"{output.stdout}\n")
 
         if output.stderr:
-            print(f"Error:\n{output.stderr}")
-            f.write(f"Error:\n{output.stderr}\n")
+            print(f"Error:\n{output.stderr}\n\nAutomounting is disabled as autofs is not in service.")
+            pretty_underline(output.stderr, "-")
+            f.write(f"Error:\n{output.stderr}\n\nAutomounting is disabled as autofs is not in service.\n")
+            f.write("===============================\n\n")
+            print()
+            return
 
         if output.stdout.strip() == "disabled":
             print("Automounting is disabled.")
