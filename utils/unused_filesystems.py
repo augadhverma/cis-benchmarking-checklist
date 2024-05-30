@@ -12,6 +12,9 @@ import subprocess
 import inspect
 
 from .pretty import pretty_print, pretty_underline
+from datetime import datetime
+
+OUTPUT_FILE = "unused_filesystems_output.txt"
 
 # 1.1.1 Disable unused filesystems
 
@@ -50,7 +53,7 @@ def ensure_cramfs_disabled():
         print(modprobe_result.stderr.strip())
         pretty_underline(modprobe_result.stderr, "-")
     else:
-        pretty_underline(modprobe_result.stdout)
+        pretty_underline(modprobe_result.stdout, "-")
 
     print(f"Running command: {lsmod_command}")
     lsmod_result = subprocess.run(lsmod_command, shell=True, capture_output=True, text=True)
@@ -60,7 +63,7 @@ def ensure_cramfs_disabled():
         print(lsmod_result.stderr.strip())
         pretty_underline(lsmod_result.stderr, "-")
     else:
-        pretty_underline(lsmod_result.stdout)
+        pretty_underline(lsmod_result.stdout, "-")
 
     expected_output_modprobe = "insmod /lib/modules/6.5.O-35-generic/kernel/fs/cramfs/cramfs.ko"
     
@@ -76,6 +79,7 @@ def ensure_cramfs_disabled():
         print(f"{filesystem} filesystem mounting is not properly disabled.")
     print()
 
+    return {modprobe_command: modprobe_result, lsmod_command: lsmod_result}
 
 def ensure_freevxfs_disabled():
     """
@@ -110,7 +114,7 @@ def ensure_freevxfs_disabled():
         print(modprobe_result.stderr.strip())
         pretty_underline(modprobe_result.stderr, "-")
     else:
-        pretty_underline(modprobe_result.stdout)
+        pretty_underline(modprobe_result.stdout, "-")
 
     print(f"Running command: {lsmod_command}")
     lsmod_result = subprocess.run(lsmod_command, shell=True, capture_output=True, text=True)
@@ -120,7 +124,7 @@ def ensure_freevxfs_disabled():
         print(lsmod_result.stderr.strip())
         pretty_underline(lsmod_result.stderr, "-")
     else:
-        pretty_underline(lsmod_result.stdout)
+        pretty_underline(lsmod_result.stdout, "-")
 
     expected_output_modprobe = "insmod /lib/modules/6.5.0-35-generic/kernel/fs/freevxfs/freevxfs.ko"
 
@@ -132,6 +136,8 @@ def ensure_freevxfs_disabled():
     else:
         print(f"{filesystem} filesystem mounting is not properly disabled.")
     print()
+
+    return {modprobe_command: modprobe_result, lsmod_command: lsmod_result}
 
 def ensure_jffs2_disabled():
     """
@@ -166,7 +172,7 @@ def ensure_jffs2_disabled():
         print(modprobe_result.stderr.strip())
         pretty_underline(modprobe_result.stderr, "-")
     else:
-        pretty_underline(modprobe_result.stdout)
+        pretty_underline(modprobe_result.stdout, "-")
 
     print(f"Running command: {lsmod_command}")
     lsmod_result = subprocess.run(lsmod_command, shell=True, capture_output=True, text=True)
@@ -176,7 +182,7 @@ def ensure_jffs2_disabled():
         print(lsmod_result.stderr.strip())
         pretty_underline(lsmod_result.stderr, "-")
     else:
-        pretty_underline(lsmod_result.stdout)
+        pretty_underline(lsmod_result.stdout, "-")
 
     expected_output_modprobe = "insmod /lib/modules/6.5.O-35-generic/kernel/fs/jffs2/jffs2.ko"
 
@@ -188,6 +194,8 @@ def ensure_jffs2_disabled():
     else:
         print(f"{filesystem} filesystem mounting is not properly disabled.")
     print()
+
+    return {modprobe_command: modprobe_result, lsmod_command: lsmod_result}
 
 def ensure_hfs_disabled():
     """
@@ -222,7 +230,7 @@ def ensure_hfs_disabled():
         print(modprobe_result.stderr.strip())
         pretty_underline(modprobe_result.stderr, "-")
     else:
-        pretty_underline(modprobe_result.stdout)
+        pretty_underline(modprobe_result.stdout, "-")
 
     print(f"Running command: {lsmod_command}")
     lsmod_result = subprocess.run(lsmod_command, shell=True, capture_output=True, text=True)
@@ -232,7 +240,7 @@ def ensure_hfs_disabled():
         print(lsmod_result.stderr.strip())
         pretty_underline(lsmod_result.stderr, "-")
     else:
-        pretty_underline(lsmod_result.stdout)
+        pretty_underline(lsmod_result.stdout, "-")
 
     expected_output_modprobe = "insmod /lib/modules/6.5.O-35-generic/kernel/fs/hfs/hfs.ko"
 
@@ -245,8 +253,15 @@ def ensure_hfs_disabled():
         print(f"{filesystem} filesystem mounting is not properly disabled.")
     print()
 
+    return {modprobe_command: modprobe_result, lsmod_command: lsmod_result}
 
 def run():
+    with open(OUTPUT_FILE, "w") as f:
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        f.write("CIS BENCHMARKING CHECKLIST\n")
+        f.write("==========================\n")
+        f.write(f"Starting @ {now}\n\n")
+
     pretty_print("[1.1] Filesystem Configuration", upper_underline=True)
     print()
 
@@ -258,4 +273,16 @@ def run():
 
     for name, func in functions:
         if name not in ("run", "pretty_print", "pretty_underline"):
-            func()
+            try:
+                d: dict = func()
+                with open(OUTPUT_FILE, "a"):
+                    f.write(f"Function: {name}\n")
+                    for key, value in d.items():
+                        f.write(f"Command Run: {key}\n")
+                        if value.stderr:
+                            f.write(f"Error:\n{value.stderr}\n")
+                        else:
+                            f.write(f"{value.stdout}\n")
+                            f.write("==============================\n\n")
+            except:
+                pass
