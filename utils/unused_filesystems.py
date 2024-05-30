@@ -1110,10 +1110,11 @@ def ensure_nodev_on_removable_media():
             f.write(f"Error:\n{output.stderr}\n")
 
         if output.stdout:
-            for media in output.stdout.split():
+            for media in output.stdout.splitlines():
                 if not "nodev" in media:
                     print("nodev option is NOT set on the removable medias.")
                     f.write("nodev option is NOT set on the removable medias.\n")
+                    break
             else:
                 print("nodev option is set on the removable medias.")
                 f.write("nodev option is set on the removable medias.\n")
@@ -1157,10 +1158,11 @@ def ensure_nosuid_on_removable_media():
             f.write(f"Error:\n{output.stderr}\n")
 
         if output.stdout:
-            for media in output.stdout.split():
+            for media in output.stdout.splitlines():
                 if not "nosuid" in media:
                     print("nosuid option is NOT set on the removable medias.")
                     f.write("nosuid option is NOT set on the removable medias.\n")
+                    break
             else:
                 print("nosuid option is set on the removable medias.")
                 f.write("nosuid option is set on the removable medias.\n")
@@ -1204,10 +1206,11 @@ def ensure_noexec_on_removable_media():
             f.write(f"Error:\n{output.stderr}\n")
 
         if output.stdout:
-            for media in output.stdout.split():
+            for media in output.stdout.splitlines():
                 if not "noexec" in media:
                     print("noexec option is NOT set on the removable medias.")
                     f.write("noexec option is NOT set on the removable medias.\n")
+                    break
             else:
                 print("noexec option is set on the removable medias.")
                 f.write("noexec option is set on the removable medias.\n")
@@ -1395,8 +1398,16 @@ def run():
     current_module = inspect.getmodule(inspect.currentframe())
     
     # Get all functions in the current module
-    functions = inspect.getmembers(current_module, inspect.isfunction)
+    # functions = inspect.getmembers(current_module, inspect.isfunction)
 
-    for name, func in functions:
-        if name not in ("run", "pretty_print", "pretty_underline"):
-            func()
+    source_lines, _ = inspect.getsourcelines(current_module)
+
+    functions = []
+    for line in source_lines:
+        if line.strip().startswith('def ensure'):
+            func_name = line.split('(')[0].replace('def ', '').strip()
+            functions.append(func_name)
+
+    for func_name in functions:
+        func = getattr(current_module, func_name)
+        func()
