@@ -79,7 +79,22 @@ def ensure_cramfs_disabled():
         print(f"{filesystem} filesystem mounting is not properly disabled.")
     print()
 
-    return {modprobe_command: modprobe_result, lsmod_command: lsmod_result}
+    with open(OUTPUT_FILE, "a") as f:
+        f.write(f"Filesystem: {filesystem}\n")
+        
+        f.write(f"Command Run: {modprobe_command}\n")
+        if modprobe_result.stderr:
+            f.write(f"Error:\n{modprobe_result.stderr}\n")
+        else:
+            f.write(f"{modprobe_result.stdout}\n")
+
+        f.write(f"Command Run: {lsmod_command}\n")
+        if lsmod_result.stderr:
+            f.write(f"Error:\n{lsmod_result.stderr}\n")
+        else:
+            f.write(f"{lsmod_result.stdout}\n")
+        
+        f.write("===============================\n\n")
 
 def ensure_freevxfs_disabled():
     """
@@ -137,7 +152,22 @@ def ensure_freevxfs_disabled():
         print(f"{filesystem} filesystem mounting is not properly disabled.")
     print()
 
-    return {modprobe_command: modprobe_result, lsmod_command: lsmod_result}
+    with open(OUTPUT_FILE, "a") as f:
+        f.write(f"Filesystem: {filesystem}\n")
+        
+        f.write(f"Command Run: {modprobe_command}\n")
+        if modprobe_result.stderr:
+            f.write(f"Error:\n{modprobe_result.stderr}\n")
+        else:
+            f.write(f"{modprobe_result.stdout}\n")
+
+        f.write(f"Command Run: {lsmod_command}\n")
+        if lsmod_result.stderr:
+            f.write(f"Error:\n{lsmod_result.stderr}\n")
+        else:
+            f.write(f"{lsmod_result.stdout}\n")
+        
+        f.write("===============================\n\n")
 
 def ensure_jffs2_disabled():
     """
@@ -195,7 +225,22 @@ def ensure_jffs2_disabled():
         print(f"{filesystem} filesystem mounting is not properly disabled.")
     print()
 
-    return {modprobe_command: modprobe_result, lsmod_command: lsmod_result}
+    with open(OUTPUT_FILE, "a") as f:
+        f.write(f"Filesystem: {filesystem}\n")
+        
+        f.write(f"Command Run: {modprobe_command}\n")
+        if modprobe_result.stderr:
+            f.write(f"Error:\n{modprobe_result.stderr}\n")
+        else:
+            f.write(f"{modprobe_result.stdout}\n")
+
+        f.write(f"Command Run: {lsmod_command}\n")
+        if lsmod_result.stderr:
+            f.write(f"Error:\n{lsmod_result.stderr}\n")
+        else:
+            f.write(f"{lsmod_result.stdout}\n")
+        
+        f.write("===============================\n\n")
 
 def ensure_hfs_disabled():
     """
@@ -253,7 +298,22 @@ def ensure_hfs_disabled():
         print(f"{filesystem} filesystem mounting is not properly disabled.")
     print()
 
-    return {modprobe_command: modprobe_result, lsmod_command: lsmod_result}
+    with open(OUTPUT_FILE, "a") as f:
+        f.write(f"Filesystem: {filesystem}\n")
+        
+        f.write(f"Command Run: {modprobe_command}\n")
+        if modprobe_result.stderr:
+            f.write(f"Error:\n{modprobe_result.stderr}\n")
+        else:
+            f.write(f"{modprobe_result.stdout}\n")
+
+        f.write(f"Command Run: {lsmod_command}\n")
+        if lsmod_result.stderr:
+            f.write(f"Error:\n{lsmod_result.stderr}\n")
+        else:
+            f.write(f"{lsmod_result.stdout}\n")
+        
+        f.write("===============================\n\n")
 
 def run():
     with open(OUTPUT_FILE, "w") as f:
@@ -273,16 +333,4 @@ def run():
 
     for name, func in functions:
         if name not in ("run", "pretty_print", "pretty_underline"):
-            try:
-                d: dict = func()
-                with open(OUTPUT_FILE, "a"):
-                    f.write(f"Function: {name}\n")
-                    for key, value in d.items():
-                        f.write(f"Command Run: {key}\n")
-                        if value.stderr:
-                            f.write(f"Error:\n{value.stderr}\n")
-                        else:
-                            f.write(f"{value.stdout}\n")
-                            f.write("==============================\n\n")
-            except:
-                pass
+            func()
