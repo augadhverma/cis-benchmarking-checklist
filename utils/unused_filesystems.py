@@ -10,11 +10,20 @@ Linux Benchmark v2.0.0
 
 import subprocess
 import inspect
+import csv
 
 from .pretty import pretty_print, pretty_underline
 from datetime import datetime
 
 OUTPUT_FILE = "unused_filesystems_output.txt"
+CSV_FILE = "unused_filesystems_output.csv"
+
+CSV_HEADERS = ["Section", "Section Name", "Scored", "Checklist"]
+
+with open(CSV_FILE, "w", newline='') as csvfile:
+    csvwriter = csv.writer(csvfile)
+
+    csvwriter.writerow(CSV_HEADERS)
 
 # 1.1.1 Disable unused filesystems
 
@@ -37,6 +46,11 @@ def ensure_cramfs_disabled():
     Removing support for unneeded filesystem types reduces the local attack surface of the
     server. If this filesystem type is not needed, disable it.
     """
+    section = "1.1.1.1"
+    section_name = "Ensure mounting of cramfs filesystems is disabled"
+    is_scored = True
+    is_compliant = False
+
     pretty_print("[1.1.1.1] Ensure mounting of cramfs filesystems is disabled (Scored)")
     print()
     
@@ -71,10 +85,12 @@ def ensure_cramfs_disabled():
 
     if modprobe_disabled and lsmod_disabled:
         print(f"{filesystem} filesystem mounting is disabled")
+        is_compliant = True
     else:
         print(f"{filesystem} filesystem mounting is not properly disabled.")
     print()
 
+    # Output to .txt file
     with open(OUTPUT_FILE, "a") as f:
         f.write(f"Filesystem: {filesystem}\n")
         
@@ -91,6 +107,15 @@ def ensure_cramfs_disabled():
             f.write(f"{lsmod_result.stdout}\n")
         
         f.write("===============================\n\n")
+
+    # Output to .csv file
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
 
 def ensure_freevxfs_disabled():
     """
@@ -109,6 +134,11 @@ def ensure_freevxfs_disabled():
     Removing support for unneeded filesystem types reduces the local attack surface of the
     system. If this filesystem type is not needed, disable it.
     """
+    section = "1.1.1.2"
+    section_name = "Ensure mounting of freevxfs filesystems is disabled"
+    is_scored = True
+    is_compliant = False
+
     pretty_print("[1.1.1.2] Ensure mounting of freevxfs filesystems is disabled (Scored)")
     print()
     
@@ -142,10 +172,12 @@ def ensure_freevxfs_disabled():
 
     if modprobe_disabled and lsmod_disabled:
         print(f"{filesystem} filesystem mounting is disabled")
+        is_compliant = True
     else:
         print(f"{filesystem} filesystem mounting is not properly disabled.")
     print()
 
+    # Output to .txt file
     with open(OUTPUT_FILE, "a") as f:
         f.write(f"Filesystem: {filesystem}\n")
         
@@ -162,6 +194,15 @@ def ensure_freevxfs_disabled():
             f.write(f"{lsmod_result.stdout}\n")
         
         f.write("===============================\n\n")
+
+    # Output to .csv file
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
 
 def ensure_jffs2_disabled():
     """
@@ -180,6 +221,11 @@ def ensure_jffs2_disabled():
     Removing support for unneeded filesystem types reduces the local attack surface of the
     system. If this filesystem type is not needed, disable it.
     """
+    section = "1.1.1.3"
+    section_name = "Ensure mounting of jffs2 filesystems is disabled"
+    is_scored = True
+    is_compliant = False
+
     pretty_print("[1.1.1.3] Ensure mounting of jffs2 filesystems is disabled (Scored)")
     print()
     
@@ -213,10 +259,12 @@ def ensure_jffs2_disabled():
 
     if modprobe_disabled and lsmod_disabled:
         print(f"{filesystem} filesystem mounting is disabled")
+        is_compliant = True
     else:
         print(f"{filesystem} filesystem mounting is not properly disabled.")
     print()
 
+    # Output to .txt file
     with open(OUTPUT_FILE, "a") as f:
         f.write(f"Filesystem: {filesystem}\n")
         
@@ -233,6 +281,15 @@ def ensure_jffs2_disabled():
             f.write(f"{lsmod_result.stdout}\n")
         
         f.write("===============================\n\n")
+
+    # Output to .csv file
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
 
 def ensure_hfs_disabled():
     """
@@ -251,6 +308,11 @@ def ensure_hfs_disabled():
     Removing support for unneeded filesystem types reduces the local attack surface of the
     system. If this filesystem type is not needed, disable it.
     """
+    section = "1.1.1.4"
+    section_name = "Ensure mounting of hfs filesystems is disabled"
+    is_scored = True
+    is_compliant = False
+
     pretty_print("[1.1.1.4] Ensure mounting of hfs filesystems is disabled (Scored)")
     print()
     
@@ -284,6 +346,7 @@ def ensure_hfs_disabled():
 
     if modprobe_disabled and lsmod_disabled:
         print(f"{filesystem} filesystem mounting is disabled")
+        is_compliant = True
     else:
         print(f"{filesystem} filesystem mounting is not properly disabled.")
     print()
@@ -305,6 +368,15 @@ def ensure_hfs_disabled():
         
         f.write("===============================\n\n")
 
+    # Output to .csv file
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
+
 def ensure_hfsplus_disabled():
     """
     Profile Applicability:
@@ -322,6 +394,10 @@ def ensure_hfsplus_disabled():
     Removing support for unneeded filesystem types reduces the local attack surface of the
     system. If this filesystem type is not needed, disable it.
     """
+    section = "1.1.1.5"
+    section_name = "Ensure mounting of hfsplus filesystems is disabled"
+    is_scored = True
+    is_compliant = False
     pretty_print("[1.1.1.5] Ensure mounting of hfsplus filesystems is disabled (Scored)")
     print()
     
@@ -355,6 +431,7 @@ def ensure_hfsplus_disabled():
 
     if modprobe_disabled and lsmod_disabled:
         print(f"{filesystem} filesystem mounting is disabled")
+        is_compliant = True
     else:
         print(f"{filesystem} filesystem mounting is not properly disabled.")
     print()
@@ -376,6 +453,15 @@ def ensure_hfsplus_disabled():
         
         f.write("===============================\n\n")
 
+    # Output to .csv file
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
+
 def ensure_squashfs_disabled():
     """
     Profile Applicability:
@@ -394,7 +480,11 @@ def ensure_squashfs_disabled():
     Removing support for unneeded filesystem types reduces the local attack surface of the
     system. If this filesystem type is not needed, disable it.
     """
-    pretty_print("[1.1.1.6] Ensure mounting of hfs filesystems is disabled (Scored)")
+    section = "1.1.1.6"
+    section_name = "Ensure mounting of squashfs filesystems is disabled"
+    is_scored = True
+    is_compliant = False
+    pretty_print("[1.1.1.6] Ensure mounting of squashfs filesystems is disabled (Scored)")
     print()
     
     filesystem = 'squashfs'
@@ -427,6 +517,7 @@ def ensure_squashfs_disabled():
 
     if modprobe_disabled and lsmod_disabled:
         print(f"{filesystem} filesystem mounting is disabled")
+        is_compliant = True
     else:
         print(f"{filesystem} filesystem mounting is not properly disabled.")
     print()
@@ -448,6 +539,15 @@ def ensure_squashfs_disabled():
         
         f.write("===============================\n\n")
 
+    # Output to .csv file
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
+
 def ensure_udf_disabled():
     """
     Profile Applicability:
@@ -467,7 +567,11 @@ def ensure_udf_disabled():
     Removing support for unneeded filesystem types reduces the local attack surface of the
     system. If this filesystem type is not needed, disable it.
     """
-    pretty_print("[1.1.1.7] Ensure mounting of hfs filesystems is disabled (Scored)")
+    section = "1.1.1.7"
+    section_name = "Ensure mounting of udf filesystems is disabled"
+    is_scored = True
+    is_compliant = False
+    pretty_print("[1.1.1.7] Ensure mounting of udf filesystems is disabled (Scored)")
     print()
     
     filesystem = 'udf'
@@ -500,6 +604,7 @@ def ensure_udf_disabled():
 
     if modprobe_disabled and lsmod_disabled:
         print(f"{filesystem} filesystem mounting is disabled")
+        is_compliant = True
     else:
         print(f"{filesystem} filesystem mounting is not properly disabled.")
     print()
@@ -521,6 +626,15 @@ def ensure_udf_disabled():
         
         f.write("===============================\n\n")
 
+    # Output to .csv file
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
+
 #TODO: Add check for UEFI
 def ensure_vfat_disabled():
     """
@@ -540,7 +654,11 @@ def ensure_vfat_disabled():
     Removing support for unneeded filesystem types reduces the local attack surface of the
     system. If this filesystem type is not needed, disable it.
     """
-    pretty_print("[1.1.1.8] Ensure mounting of hfs filesystems is disabled (Scored)")
+    section = "1.1.1.8"
+    section_name = "Ensure mounting of udf filesystems is disabled"
+    is_scored = True
+    is_compliant = False
+    pretty_print("[1.1.1.8] Ensure mounting of vfat filesystems is disabled (Scored)")
     print()
     
     filesystem = 'vfat'
@@ -573,6 +691,7 @@ def ensure_vfat_disabled():
 
     if modprobe_disabled and lsmod_disabled:
         print(f"{filesystem} filesystem mounting is disabled")
+        is_compliant = True
     else:
         print(f"{filesystem} filesystem mounting is not properly disabled.")
     print()
@@ -594,6 +713,15 @@ def ensure_vfat_disabled():
         
         f.write("===============================\n\n")
     print()
+
+    # Output to .csv file
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
 
 def ensure_tmp_configured():
     """
@@ -618,6 +746,11 @@ def ensure_tmp_configured():
     This can be accomplished by either mounting tmpfs to /tmp, or creating a separate
     partition for /tmp.
     """
+    section = "1.1.2"
+    section_name = "Ensure /tmp is configured"
+    is_scored = True
+    is_compliant = False
+
     configured = False
 
     pretty_print("[1.1.2] Ensure /tmp is configured (Scored)")
@@ -653,6 +786,7 @@ def ensure_tmp_configured():
                 configured = configured or op in output.stdout
         
         if configured:
+            is_compliant = True
             print("/tmp is configured.")
             f.write("/tmp is configured.\n")
         else:
@@ -661,6 +795,16 @@ def ensure_tmp_configured():
         
         f.write("===============================\n\n")
     print()
+
+
+    # Output to .csv file
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
 
 def ensure_nodev_on_tmp():
     """
@@ -678,6 +822,11 @@ def ensure_nodev_on_tmp():
     Since the `/tmp` filesystem is not intended to support devices, set this option to ensure that
     users cannot attempt to create block or character special devices in `/tmp`.
     """
+    section = "1.1.3"
+    section_name = "Ensure nodev option set on /tmp partition"
+    is_scored = True
+    is_compliant = False
+
     pretty_print("[1.1.3] Ensure nodev option set on /tmp partition (Scored)")
     print()
 
@@ -701,12 +850,22 @@ def ensure_nodev_on_tmp():
         if not output.stdout.strip():
             print("nodev option is set on /tmp partition.")
             f.write("nodev option is set on /tmp partition.\n")
+            is_compliant = True
         else:
             print("nodev option is NOT set on /tmp partition.")
             f.write("nodev option is NOT set on /tmp partition.\n")
 
         f.write("===============================\n\n")
     print()
+
+    # Output to .csv file
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
 
 def ensure_nosuid_on_tmp():
     """
@@ -724,6 +883,11 @@ def ensure_nosuid_on_tmp():
     Since the `/tmp` filesystem is only intended for temporary file storage, set this option to
     ensure that users cannot create `setuid` files in `/tmp`.
     """
+    section = "1.1.4"
+    section_name = "Ensure nosuid option set on /tmp partition"
+    is_scored = True
+    is_compliant = False
+
     pretty_print("[1.1.4] Ensure nosuid option set on /tmp partition (Scored)")
     print()
 
@@ -745,6 +909,7 @@ def ensure_nosuid_on_tmp():
             f.write(f"Error:\n{output.stderr}\n")
 
         if not output.stdout.strip():
+            is_compliant = True
             print("nosuid option is set on /tmp partition.")
             f.write("nosuid option is set on /tmp partition.\n")
         else:
@@ -753,6 +918,14 @@ def ensure_nosuid_on_tmp():
 
         f.write("===============================\n\n")
     print()
+
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
 
 def ensure_noexec_on_tmp():
     """
@@ -770,6 +943,10 @@ def ensure_noexec_on_tmp():
     Since the `/tmp` filesystem is only intended for temporary file storage, set this option to
     ensure that users cannot run executable binaries from `/tmp`.
     """
+    section = "1.1.5"
+    section_name = "Ensure noexec option set on /tmp partition"
+    is_scored = True
+    is_compliant = False
     pretty_print("[1.1.5] Ensure noexec option set on /tmp partition (Scored)")
     print()
 
@@ -791,6 +968,7 @@ def ensure_noexec_on_tmp():
             f.write(f"Error:\n{output.stderr}\n")
 
         if not output.stdout.strip():
+            is_compliant = True
             print("noexec option is set on /tmp partition.")
             f.write("noexec option is set on /tmp partition.\n")
         else:
@@ -799,6 +977,14 @@ def ensure_noexec_on_tmp():
 
         f.write("===============================\n\n")
     print()
+
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
 
 def ensure_var_configured():
     """
@@ -817,6 +1003,10 @@ def ensure_var_configured():
     Since the `/var` directory may contain world-writable files and directories, there is a risk of
     resource exhaustion if it is not bound to a separate partition.
     """
+    section = "1.1.6"
+    section_name = "Ensure separate partition exists for /var"
+    is_scored = True
+    is_compliant = False
     pretty_print("[1.1.6] Ensure separate partition exists for /var (Scored)")
     print()
 
@@ -840,6 +1030,7 @@ def ensure_var_configured():
             f.write(f"Error:\n{output.stderr}\n")
 
         if output.stdout.strip() in expected_output:
+            is_compliant = True
             print("/var is configured.")
             f.write("/var is configured.\n")
         else:
@@ -848,6 +1039,14 @@ def ensure_var_configured():
 
         f.write("===============================\n\n")
     print()
+
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
 
 #TODO: Add 1.1.7 - 1.1.12
 
@@ -868,6 +1067,10 @@ def ensure_home_configured():
     directory to protect against resource exhaustion and restrict the type of files that can be
     stored under `/home`.
     """
+    section = "1.1.13"
+    section_name = "Ensure separate partition exists for /home"
+    is_scored = True
+    is_compliant = False
     pretty_print("[1.1.13] Ensure separate partition exists for /home (Scored)")
     print()
 
@@ -891,6 +1094,7 @@ def ensure_home_configured():
             f.write(f"Error:\n{output.stderr}\n")
 
         if output.stdout.strip() in expected_output:
+            is_compliant = True
             print("/home is configured.")
             f.write("/home is configured.\n")
         else:
@@ -899,6 +1103,15 @@ def ensure_home_configured():
 
         f.write("===============================\n\n")
     print()
+
+
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
 
 def ensure_nodev_on_home():
     """
@@ -916,6 +1129,10 @@ def ensure_nodev_on_home():
     Since the user partitions are not intended to support devices, set this option to ensure that
     users cannot attempt to create block or character special devices.
     """
+    section = "1.1.14"
+    section_name = "Ensure nodev option set on /home partition"
+    is_scored = True 
+    is_compliant = False
     pretty_print("[1.1.14] Ensure nodev option set on /home partition (Scored)")
     print()
 
@@ -937,6 +1154,7 @@ def ensure_nodev_on_home():
             f.write(f"Error:\n{output.stderr}\n")
 
         if not output.stdout.strip():
+            is_compliant = True
             print("nodev option is set on /home partition.")
             f.write("nodev option is set on /home partition.\n")
         else:
@@ -945,6 +1163,14 @@ def ensure_nodev_on_home():
 
         f.write("===============================\n\n")
     print()
+
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
 
 def ensure_nodev_on_dev_shm():
     """
@@ -962,6 +1188,11 @@ def ensure_nodev_on_dev_shm():
     Since the `/dev/shm` filesystem is not intended to support devices, set this option to ensure
     that users cannot attempt to create special devices in `/dev/shm` partitions.
     """
+    section = "1.1.15"
+    section_name = "Ensure nodev option set on /dev/shm partition"
+    is_scored = True
+    is_compliant = False
+
     pretty_print("[1.1.15] Ensure nodev option set on /dev/shm partition (Scored)")
     print()
 
@@ -983,6 +1214,7 @@ def ensure_nodev_on_dev_shm():
             f.write(f"Error:\n{output.stderr}\n")
 
         if not output.stdout.strip():
+            is_compliant = True
             print("nodev option is set on /dev/shm partition.")
             f.write("nodev option is set on /dev/shm partition.\n")
         else:
@@ -991,6 +1223,14 @@ def ensure_nodev_on_dev_shm():
 
         f.write("===============================\n\n")
     print()
+    
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
 
 def ensure_nosuid_on_dev_shm():
     """
@@ -1008,6 +1248,10 @@ def ensure_nosuid_on_dev_shm():
     Setting this option on a file system prevents users from introducing privileged programs
     onto the system and allowing non-root users to execute them
     """
+    section = "1.1.16"
+    section_name = "Ensure nosuid option set on /dev/shm partition"
+    is_scored = True
+    is_compliant = False
     pretty_print("[1.1.16] Ensure nosuid option set on /dev/shm partition (Scored)")
     print()
 
@@ -1029,6 +1273,7 @@ def ensure_nosuid_on_dev_shm():
             f.write(f"Error:\n{output.stderr}\n")
 
         if not output.stdout.strip():
+            is_compliant = True
             print("nosuid option is set on /dev/shm partition.")
             f.write("nosuid option is set on /dev/shm partition.\n")
         else:
@@ -1037,6 +1282,14 @@ def ensure_nosuid_on_dev_shm():
 
         f.write("===============================\n\n")
     print()
+
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
 
 def ensure_noexec_on_dev_shm():
     """
@@ -1054,6 +1307,11 @@ def ensure_noexec_on_dev_shm():
     Setting this option on a file system prevents users from executing programs from shared
     memory. This deters users from introducing potentially malicious software on the system.
     """
+    section = "1.1.17"
+    section_name = "Ensure noexec option set on /dev/shm partition"
+    is_scored = True
+    is_compliant = False
+
     pretty_print("[1.1.17] Ensure noexec option set on /dev/shm partition (Scored)")
     print()
 
@@ -1075,6 +1333,7 @@ def ensure_noexec_on_dev_shm():
             f.write(f"Error:\n{output.stderr}\n")
 
         if not output.stdout.strip():
+            is_compliant = True
             print("noexec option is set on /dev/shm partition.")
             f.write("noexec option is set on /dev/shm partition.\n")
         else:
@@ -1083,6 +1342,14 @@ def ensure_noexec_on_dev_shm():
 
         f.write("===============================\n\n")
     print()
+
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
 
 def ensure_nodev_on_removable_media():
     """
@@ -1101,6 +1368,11 @@ def ensure_nodev_on_removable_media():
     circumvent security controls by allowing non-root users to access sensitive device files
     such as `/dev/kmem` or the raw disk partitions.
     """
+    section = "1.1.18"
+    section_name = "Ensure nodev option set on removable media partitions"
+    is_scored = False
+    is_compliant = False
+
     pretty_print("[1.1.18] Ensure nodev option set on removable media partitions (Not Scored)")
     print()
 
@@ -1128,11 +1400,20 @@ def ensure_nodev_on_removable_media():
                     f.write("nodev option is NOT set on the removable medias.\n")
                     break
             else:
+                is_compliant = True
                 print("nodev option is set on the removable medias.")
                 f.write("nodev option is set on the removable medias.\n")
 
         f.write("===============================\n\n")
     print()
+
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
 
 def ensure_nosuid_on_removable_media():
     """
@@ -1150,6 +1431,10 @@ def ensure_nosuid_on_removable_media():
     Run the following command and verify that the nosuid option is set on all removable media
     partitions.
     """
+    section = "1.1.19"
+    section_name = "Ensure nosuid option set on removable media partitions"
+    is_scored = False
+    is_compliant = False
     pretty_print("[1.1.19] Ensure nosuid option set on removable media partitions (Not Scored)")
     print()
 
@@ -1177,11 +1462,20 @@ def ensure_nosuid_on_removable_media():
                     f.write("nosuid option is NOT set on the removable medias.\n")
                     break
             else:
+                is_compliant = True
                 print("nosuid option is set on the removable medias.")
                 f.write("nosuid option is set on the removable medias.\n")
 
         f.write("===============================\n\n")
     print()
+
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
 
 def ensure_noexec_on_removable_media():
     """
@@ -1199,6 +1493,10 @@ def ensure_noexec_on_removable_media():
     Run the following command and verify that the noexec option is set on all removable media
     partitions.
     """
+    section = "1.1.20"
+    section_name = "Ensure noexec option set on removable media partitions"
+    is_scored = False
+    is_compliant = False
     pretty_print("[1.1.20] Ensure noexec option set on removable media partitions (Not Scored)")
     print()
 
@@ -1226,11 +1524,20 @@ def ensure_noexec_on_removable_media():
                     f.write("noexec option is NOT set on the removable medias.\n")
                     break
             else:
+                is_compliant = True
                 print("noexec option is set on the removable medias.")
                 f.write("noexec option is set on the removable medias.\n")
 
         f.write("===============================\n\n")
     print()
+
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
 
 def ensure_sticky_bit_on_world_writable_directories():
     """
@@ -1249,6 +1556,10 @@ def ensure_sticky_bit_on_world_writable_directories():
     This feature prevents the ability to delete or rename files in world writable directories
     (such as `/tmp` ) that are owned by another user.
     """
+    section = "1.1.21"
+    section_name = "Ensure sticky bit is set on all world-writable directories"
+    is_scored = True
+    is_compliant = False
     pretty_print("[1.1.21] Ensure sticky bit is set on all world-writable directories (Scored)")
     print()
 
@@ -1270,6 +1581,7 @@ def ensure_sticky_bit_on_world_writable_directories():
             f.write(f"Error:\n{output.stderr}\n")
 
         if not output.stdout.strip():
+            is_compliant = True
             print("Sticky bit is set on all world-writable directories.")
             f.write("Sticky bit is set on all world-writable directories.\n")
         else:
@@ -1278,6 +1590,14 @@ def ensure_sticky_bit_on_world_writable_directories():
 
         f.write("===============================\n\n")
     print()
+
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
 
 def ensure_disabled_automounting():
     """
@@ -1296,6 +1616,10 @@ def ensure_disabled_automounting():
     and have its contents available in system even if they lacked permissions to mount it
     themselves.
     """
+    section = "1.1.22"
+    section_name = "Disable Automounting"
+    is_scored = True
+    is_compliant = False
     pretty_print("[1.1.22] Disable Automounting (Scored)")
     print()
 
@@ -1321,6 +1645,7 @@ def ensure_disabled_automounting():
             return
 
         if output.stdout.strip() == "disabled":
+            is_compliant = True
             print("Automounting is disabled.")
             f.write("Automounting is disabled.\n")
         else:
@@ -1329,6 +1654,14 @@ def ensure_disabled_automounting():
 
         f.write("===============================\n\n")
     print()
+
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
 
 def ensure_usb_storage_disabled():
     """
@@ -1349,6 +1682,10 @@ def ensure_usb_storage_disabled():
     Restricting USB access on the system will decrease the physical attack surface for a device
     and diminish the possible vectors to introduce malware.
     """
+    section = "1.1.23"
+    section_name = "Disabled USB Storage"
+    is_scored = True
+    is_compliant = False
     pretty_print("[1.1.23] Disable USB Storage (Scored)")
     print()
     
@@ -1396,6 +1733,7 @@ def ensure_usb_storage_disabled():
             f.write(f"{lsmod_result.stdout}\n")
 
         if modprobe_disabled and lsmod_disabled:
+            is_compliant = True
             print(f"USB Access is restricted.")
             f.write("USB Access is restricted.\n")
         else:
@@ -1405,6 +1743,14 @@ def ensure_usb_storage_disabled():
         
         f.write("===============================\n\n")
     print()
+
+    with open(CSV_FILE, "a", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        scored = "Scored" if is_scored else "Not Scored"
+        compliant = "Compliant" if is_compliant else "Not Compliant"
+        row = [section, section_name, scored, compliant]
+
+        csvwriter.writerow(row)
 
 def run():
     with open(OUTPUT_FILE, "w") as f:

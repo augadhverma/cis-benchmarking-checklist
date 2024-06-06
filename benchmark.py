@@ -1,11 +1,13 @@
 import distro
 
+from datetime import datetime
+
 SCORED = 0
 NOTSCORED = 0
 PASS = 0
 FAILED = 0
 
-from utils import unused_filesystems
+from utils import unused_filesystems, pretty_print
 
 def create_env_file(os_info: dict):
     filename = ".env"
@@ -35,8 +37,15 @@ def get_os_info() -> dict[str, str]:
     return os_info
 
 if __name__ == '__main__':
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    pretty_print("CIS BENCHMARKING CHECKLIST 1.0.0", upper_underline=True)
+    print(f"Starting @ {now}\n")
+
     os_info = get_os_info()
     if os_info['os_version'] == '22.04' and os_info['os_type'] == 'ubuntu':
+        print("Running Benchmark For:")
+        pretty_print(f"Ubuntu ({os_info['os_codename']}) {os_info['os_version']}", upper_underline=True)
+
         unused_filesystems.run()
     else:
-        print("Unsupported OS")
+        print(f"{os_info['os_type']} is currently not supported.")
